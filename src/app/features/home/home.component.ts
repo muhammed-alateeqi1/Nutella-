@@ -29,7 +29,6 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
                 : 'Explore our luxury menu' }}
           </p>
         </div>
-
         <div class="hero-stats animate-fade-up">
           <div class="stat">
             <span class="stat-number">{{ menuService.categories().length }}</span>
@@ -158,7 +157,7 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
       .categories-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
-    @media (min-width: 900px) {
+    @media (min-width: 900px)   {
       .categories-grid { grid-template-columns: repeat(3, 1fr); }
     }
 
