@@ -55,7 +55,7 @@ import { SearchResultsOverlayComponent } from '../../shared/components/search-ba
         <div class="footer-inner">
           <div class="footer-divider"></div>
           <div class="footer-content">
-            <span class="footer-logo-text">✦ Nuttela Café</span>
+            <span class="footer-logo-text">Nuttela Café | <span class="footer-author"><a target="_blank" title="Visit my Portfolio" href="https://ateeqi.vercel.app/">Muhammed Al-Ateeqi</a></span> </span>
             <p class="footer-tagline">
               @if (langService.currentLang() === 'ar') {
                 كافيه نوتيلا · جميع الأسعار بالجنيه المصري
@@ -205,7 +205,12 @@ import { SearchResultsOverlayComponent } from '../../shared/components/search-ba
       align-items: center;
       gap: var(--space-2);
     }
-
+.footer-author{
+ text-decoration: underline;
+ cursor: pointer;
+ font-family: var(--font-en);
+ text-transform: capitalize;
+}
     .footer-logo-text {
       font-family: var(--font-en);
       font-size: var(--font-size-sm);
