@@ -7,7 +7,7 @@
       "nameEn": "Crepe",
       "nameAr": "كريب",
       "icon": "🥞",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/Crepe.png",
       "items": [
         { "id": 101, "titleEn": "Crepe Nutella", "titleAr": "كريب نوتيلا", "isPopular": true, "isAvailable": true, "price": 80 },
         { "id": 102, "titleEn": "Crepe White Chocolate", "titleAr": "كريب وايت شوكليت", "isPopular": false, "isAvailable": true, "price": 85 },
@@ -41,7 +41,7 @@
       "nameEn": "Pancake",
       "nameAr": "بان كيك",
       "icon": "🥞",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/Pancake.png",
       "items": [
         { "id": 201, "titleEn": "Pancake Nutella", "titleAr": "بان كيك نوتيلا", "isPopular": true, "isAvailable": true, "price": 85 },
         { "id": 202, "titleEn": "Pancake White Chocolate", "titleAr": "بان كيك وايت", "isPopular": false, "isAvailable": true, "price": 90 },
@@ -59,7 +59,7 @@
       "nameEn": "Mini Pancake",
       "nameAr": "ميني بان كيك",
       "icon": "🫐",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/Mini Pancake.png",
       "items": [
         { "id": 301, "titleEn": "Mini Pancake Nutella", "titleAr": "ميني بان كيك نوتيلا", "isPopular": true, "isAvailable": true, "price": 90 },
         { "id": 302, "titleEn": "Mini Pancake White", "titleAr": "ميني بان كيك وايت", "isPopular": false, "isAvailable": true, "price": 95 },
@@ -77,7 +77,7 @@
       "nameEn": "Soda",
       "nameAr": "صودا",
       "icon": "🥤",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/Soda.png",
       "items": [
         { "id": 401, "titleEn": "Mojito Kiwi", "titleAr": "موهيتو كيوي", "isPopular": false, "isAvailable": true, "variants": [{ "label": "Medium", "labelAr": "وسط", "price": 55 }, { "label": "Large", "labelAr": "كبير", "price": 65 }] },
         { "id": 402, "titleEn": "Mojito Mango", "titleAr": "موهيتو مانجا", "isPopular": false, "isAvailable": true, "variants": [{ "label": "Medium", "labelAr": "وسط", "price": 55 }, { "label": "Large", "labelAr": "كبير", "price": 65 }] },
@@ -97,7 +97,7 @@
       "nameEn": "Cold Drinks",
       "nameAr": "مشروبات باردة",
       "icon": "🧃",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/colddrinks.png",
       "items": [
         { "id": 501, "titleEn": "Banana Milk", "titleAr": "موز حليب", "isPopular": false, "isAvailable": true, "variants": [{ "label": "Medium", "labelAr": "وسط", "price": 45 }, { "label": "Large", "labelAr": "كبير", "price": 55 }] },
         { "id": 502, "titleEn": "Guava", "titleAr": "جوافة", "isPopular": false, "isAvailable": true, "variants": [{ "label": "Medium", "labelAr": "وسط", "price": 40 }, { "label": "Large", "labelAr": "كبير", "price": 50 }] },
@@ -116,7 +116,7 @@
       "nameEn": "Hot Drinks",
       "nameAr": "مشروبات ساخنة",
       "icon": "☕",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/Hot Drinks.png",
       "items": [
         { "id": 601, "titleEn": "Tea", "titleAr": "شاي", "isPopular": false, "isAvailable": true, "price": 15 },
         { "id": 602, "titleEn": "Coffee", "titleAr": "قهوة", "isPopular": false, "isAvailable": true, "price": 30 },
@@ -152,7 +152,7 @@
       "nameEn": "Waffle",
       "nameAr": "وافل",
       "icon": "🧇",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/Waffle.png",
       "items": [
         { "id": 701, "titleEn": "Waffle Nutella", "titleAr": "وافل نوتيلا", "isPopular": true, "isAvailable": true, "price": 80 },
         { "id": 702, "titleEn": "Waffle White Chocolate", "titleAr": "وافل وايت شوكليت", "isPopular": false, "isAvailable": true, "price": 85 },
@@ -184,7 +184,7 @@
       "nameEn": "Waffle Bubbles",
       "nameAr": "وافل بابلز",
       "icon": "🫧",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/Waffle Bubbles.png",
       "items": [
         { "id": 801, "titleEn": "Bubble Waffle Nutella", "titleAr": "وافل بابل نوتيلا", "isPopular": true, "isAvailable": true, "price": 90 },
         { "id": 802, "titleEn": "Bubble Waffle White Chocolate", "titleAr": "وافل بابل وايت شوكليت", "isPopular": false, "isAvailable": true, "price": 95 },
@@ -216,7 +216,7 @@
       "nameEn": "Frappe",
       "nameAr": "فرابيه",
       "icon": "🧋",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/Frape.png",
       "items": [
         { "id": 901, "titleEn": "Frappe Vanilla", "titleAr": "فرابيه فانيليا", "isPopular": false, "isAvailable": true, "variants": [{ "label": "Medium", "labelAr": "وسط", "price": 70 }, { "label": "Large", "labelAr": "كبير", "price": 80 }] },
         { "id": 902, "titleEn": "Frappe Hazelnut", "titleAr": "فرابيه بندق", "isPopular": false, "isAvailable": true, "variants": [{ "label": "Medium", "labelAr": "وسط", "price": 70 }, { "label": "Large", "labelAr": "كبير", "price": 80 }] },
@@ -231,7 +231,7 @@
       "nameEn": "Ice Coffee",
       "nameAr": "آيس كوفي",
       "icon": "🧊",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/ice coffe.png",
       "items": [
         { "id": 1001, "titleEn": "Iced Coffee", "titleAr": "ايس كوفي", "isPopular": false, "isAvailable": true, "variants": [{ "label": "Medium", "labelAr": "وسط", "price": 60 }, { "label": "Large", "labelAr": "كبير", "price": 70 }] },
         { "id": 1002, "titleEn": "Iced Latte", "titleAr": "ايس لاتيه", "isPopular": true, "isAvailable": true, "variants": [{ "label": "Medium", "labelAr": "وسط", "price": 70 }, { "label": "Large", "labelAr": "كبير", "price": 80 }] },
@@ -252,7 +252,7 @@
       "nameEn": "Cocktail",
       "nameAr": "كوكتيل",
       "icon": "🍹",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/Cocktail.png",
       "items": [
         { "id": 1101, "titleEn": "Mango Ambrosia", "titleAr": "مانجا امبرو", "isPopular": false, "isAvailable": true, "price": 70 },
         { "id": 1102, "titleEn": "Mix Cocktail", "titleAr": "كوكتيل ميكس", "isPopular": false, "isAvailable": true, "price": 60 },
@@ -269,7 +269,7 @@
       "nameEn": "Milkshake",
       "nameAr": "ميلك شيك",
       "icon": "🥛",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/Milkshake.png",
       "items": [
         { "id": 1201, "titleEn": "Chocolate Milkshake", "titleAr": "ميلك شيك شوكولاته", "isPopular": false, "isAvailable": true, "variants": [{ "label": "Medium", "labelAr": "وسط", "price": 60 }, { "label": "Large", "labelAr": "كبير", "price": 70 }] },
         { "id": 1202, "titleEn": "Vanilla Milkshake", "titleAr": "ميلك شيك فانيلا", "isPopular": false, "isAvailable": true, "variants": [{ "label": "Medium", "labelAr": "وسط", "price": 60 }, { "label": "Large", "labelAr": "كبير", "price": 70 }] },
@@ -302,7 +302,7 @@
       "nameEn": "Ice Cream Soft",
       "nameAr": "آيس كريم سوفت",
       "icon": "🍦",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/Ice Cream Soft.png",
       "items": [
         { "id": 1301, "titleEn": "Soft Serve Small", "titleAr": "سوفت صغير", "isPopular": false, "isAvailable": true, "price": 25 },
         { "id": 1302, "titleEn": "Soft Serve Medium", "titleAr": "سوفت وسط", "isPopular": false, "isAvailable": true, "price": 30 },
@@ -318,7 +318,7 @@
       "nameEn": "Ice Cream",
       "nameAr": "آيس كريم",
       "icon": "🍨",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/ice cream.png",
       "items": [
         { "id": 1401, "titleEn": "Ice Cream 2 Scoops", "titleAr": "ايس كريم 2 بولة", "isPopular": false, "isAvailable": true, "price": 20 },
         { "id": 1402, "titleEn": "Ice Cream 3 Scoops", "titleAr": "ايس كريم 3 بولة", "isPopular": false, "isAvailable": true, "price": 25 },
@@ -337,7 +337,7 @@
       "nameEn": "Smoothie",
       "nameAr": "سموذي",
       "icon": "🫐",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/Smoothie.png",
       "items": [
         { "id": 1501, "titleEn": "Strawberry Smoothie", "titleAr": "سموذي فراولة", "isPopular": true, "isAvailable": true, "variants": [{ "label": "Medium", "labelAr": "وسط", "price": 70 }, { "label": "Large", "labelAr": "كبير", "price": 80 }] },
         { "id": 1502, "titleEn": "Mango Smoothie", "titleAr": "سموذي مانجا", "isPopular": false, "isAvailable": true, "variants": [{ "label": "Medium", "labelAr": "وسط", "price": 70 }, { "label": "Large", "labelAr": "كبير", "price": 80 }] },
@@ -355,7 +355,7 @@
       "nameEn": "Dessert",
       "nameAr": "حلويات",
       "icon": "🍰",
-      "coverImage": "",
+      "coverImage": "assets/images/categories/deserts.png",
       "items": [
         { "id": 1601, "titleEn": "Red Velvet", "titleAr": "ريد فيلفت", "isPopular": true, "isAvailable": true, "price": 80 },
         { "id": 1602, "titleEn": "Kinder Cake", "titleAr": "كندر كيك", "isPopular": false, "isAvailable": true, "price": 85 },

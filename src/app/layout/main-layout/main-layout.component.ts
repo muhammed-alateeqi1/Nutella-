@@ -13,20 +13,26 @@ import { SearchResultsOverlayComponent } from '../../shared/components/search-ba
   imports: [RouterOutlet, LangToggleComponent, SearchBarComponent, SearchResultsOverlayComponent],
   template: `
     <div class="layout-shell">
-      <!-- Header -->
-      <header class="site-header glass-card" role="banner">
+      <!-- Floating Header -->
+      <header class="site-header" role="banner">
         <div class="header-inner container">
+          <!-- Brand -->
           <div class="brand">
-            <img class="logo-img" src="assets/logo.jpg" alt="Nuttela Café Logo" />
+            <div class="logo-ring">
+              <img class="logo-img" src="assets/logo.jpg" alt="Nuttela Café Logo" />
+            </div>
             <div class="brand-text">
               <span class="brand-name-en">Nuttela</span>
               <span class="brand-name-ar">كافيه نوتيلا</span>
             </div>
           </div>
 
+          <!-- Actions -->
           <div class="header-actions">
             <app-search-bar (searchChange)="onSearch($event)" />
-            <app-lang-toggle />
+            <div class="lang-wrap">
+              <app-lang-toggle />
+            </div>
           </div>
         </div>
       </header>
@@ -46,13 +52,19 @@ import { SearchResultsOverlayComponent } from '../../shared/components/search-ba
 
       <!-- Footer -->
       <footer class="site-footer">
-        <p>
-          @if (langService.currentLang() === 'ar') {
-            كافيه نوتيلا · جميع الأسعار بالجنيه المصري
-          } @else {
-            Nuttela Café · All prices in EGP
-          }
-        </p>
+        <div class="footer-inner">
+          <div class="footer-divider"></div>
+          <div class="footer-content">
+            <span class="footer-logo-text">✦ Nuttela Café</span>
+            <p class="footer-tagline">
+              @if (langService.currentLang() === 'ar') {
+                كافيه نوتيلا · جميع الأسعار بالجنيه المصري
+              } @else {
+                All prices in EGP · A luxury café experience
+              }
+            </p>
+          </div>
+        </div>
       </footer>
     </div>
   `,
@@ -61,19 +73,16 @@ import { SearchResultsOverlayComponent } from '../../shared/components/search-ba
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
-      background: var(--surface-0);
     }
 
-    /* ---- Header ---- */
+    /* ─────────────────────────── Header ─────────────────────────── */
     .site-header {
-      position: sticky;
+      position: fixed;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
-      border-radius: 0;
-      border-top: none;
-      border-inline: none;
-      border-bottom: 1px solid var(--border-subtle);
-      padding-block: var(--space-3);
+      padding-top: env(safe-area-inset-top);
     }
 
     .header-inner {
@@ -81,6 +90,17 @@ import { SearchResultsOverlayComponent } from '../../shared/components/search-ba
       align-items: center;
       justify-content: space-between;
       gap: var(--space-4);
+      background: rgba(12, 12, 12, 0.82);
+      backdrop-filter: blur(28px) saturate(200%);
+      -webkit-backdrop-filter: blur(28px) saturate(200%);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      padding: var(--space-3) var(--space-5);
+      box-shadow:
+        0 8px 32px rgba(0,0,0,0.5),
+        0 1px 0 rgba(255,255,255,0.05) inset,
+        0 0 0 1px rgba(180,135,102,0.06);
+      margin-top: var(--space-4);
     }
 
     /* Brand */
@@ -88,38 +108,56 @@ import { SearchResultsOverlayComponent } from '../../shared/components/search-ba
       display: flex;
       align-items: center;
       gap: var(--space-3);
-      text-decoration: none;
       flex-shrink: 0;
     }
 
+    .logo-ring {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      flex-shrink: 0;
+    }
+
+    .logo-ring::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-accent), var(--color-gold));
+      opacity: 0.7;
+    }
+
     .logo-img {
-      width: 44px;
-      height: 44px;
+      width: 100%;
+      height: 100%;
       border-radius: 50%;
       object-fit: cover;
-      border: 1.5px solid var(--color-gold);
-      box-shadow: var(--shadow-glow), 0 0 10px rgba(212, 175, 55, 0.15);
-      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+      border: 2px solid var(--bg-primary);
     }
 
     .brand-text {
       display: flex;
       flex-direction: column;
-      line-height: 1.1;
+      line-height: 1.15;
     }
 
     .brand-name-en {
       font-family: var(--font-en);
-      font-size: var(--font-size-md);
+      font-size: 16px;
       font-weight: 700;
-      color: var(--color-secondary);
-      letter-spacing: 0.04em;
+      color: var(--text-primary);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
     }
 
     .brand-name-ar {
       font-family: var(--font-ar);
       font-size: var(--font-size-xs);
-      color: var(--text-muted);
+      color: var(--color-accent);
+      letter-spacing: 0;
+      font-weight: 500;
     }
 
     .header-actions {
@@ -128,23 +166,64 @@ import { SearchResultsOverlayComponent } from '../../shared/components/search-ba
       gap: var(--space-3);
     }
 
-    /* ---- Main ---- */
+    .lang-wrap {
+      flex-shrink: 0;
+    }
+
+    /* ─────────────────────────── Main ─────────────────────────── */
     .main-content {
       flex: 1;
+      padding-top: 90px; /* clear fixed header */
     }
 
-    /* ---- Footer ---- */
+    /* ─────────────────────────── Footer ─────────────────────────── */
     .site-footer {
-      text-align: center;
-      padding-block: var(--space-6);
-      color: var(--text-muted);
-      font-size: var(--font-size-xs);
-      border-top: 1px solid var(--border-subtle);
+      padding-block: var(--space-10);
+      padding-inline: var(--space-6);
     }
 
-    [dir="rtl"] .brand-name-en { order: 1; }
-    [dir="rtl"] .brand-name-ar { order: 0; color: var(--color-secondary); }
-    [dir="rtl"] .brand-name-en { color: var(--text-muted); font-size: var(--font-size-xs); }
+    .footer-inner {
+      max-width: 1280px;
+      margin-inline: auto;
+    }
+
+    .footer-divider {
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        var(--border-medium) 30%,
+        rgba(180,135,102,0.2) 50%,
+        var(--border-medium) 70%,
+        transparent 100%
+      );
+      margin-bottom: var(--space-8);
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .footer-logo-text {
+      font-family: var(--font-en);
+      font-size: var(--font-size-sm);
+      font-weight: 700;
+      color: var(--color-accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .footer-tagline {
+      font-size: var(--font-size-xs);
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* RTL adjustments */
+    [dir="rtl"] .brand-name-en { order: 1; color: var(--text-muted); font-size: var(--font-size-xs); letter-spacing: 0.02em; }
+    [dir="rtl"] .brand-name-ar { order: 0; color: var(--text-primary); font-size: 16px; font-weight: 700; }
   `]
 })
 export class MainLayoutComponent {

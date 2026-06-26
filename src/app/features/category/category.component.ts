@@ -18,33 +18,37 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
   imports: [ItemCardComponent, ItemModalComponent, LoaderComponent, RouterLink],
   template: `
     <section class="category-page">
-      <!-- Sticky sub-header -->
-      <div class="cat-header glass-card">
-        <div class="cat-header-inner container">
+
+      <!-- ── Sticky sub-header ── -->
+      <div class="cat-header-wrap">
+        <div class="cat-header-pill container">
           <a
             class="back-btn"
             routerLink="/"
             id="back-to-home"
             [attr.aria-label]="langService.currentLang() === 'ar' ? 'العودة للرئيسية' : 'Back to home'"
           >
-            <span class="back-arrow" aria-hidden="true">←</span>
+            <svg class="back-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M10 13L5 8L10 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
             <span class="back-label">
               {{ langService.currentLang() === 'ar' ? 'الرئيسية' : 'Home' }}
             </span>
           </a>
 
           @if (category()) {
+            <div class="breadcrumb-sep" aria-hidden="true">/</div>
             <div class="cat-title-wrap">
               <span class="cat-icon" aria-hidden="true">{{ category()!.icon }}</span>
               <div class="cat-names">
                 @if (langService.currentLang() === 'ar') {
-                  <h1 class="cat-title" lang="ar">{{ category()!.nameAr }}</h1>
+                  <span class="cat-title" lang="ar">{{ category()!.nameAr }}</span>
                 } @else {
-                  <h1 class="cat-title" lang="en">{{ category()!.nameEn }}</h1>
+                  <span class="cat-title" lang="en">{{ category()!.nameEn }}</span>
                 }
               </div>
             </div>
-            <span class="item-count-chip">
+            <span class="item-count-chip" aria-hidden="true">
               {{ category()!.items.length }}
               {{ langService.currentLang() === 'ar' ? 'صنف' : 'items' }}
             </span>
@@ -52,18 +56,46 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
         </div>
       </div>
 
-      <!-- Items grid -->
+      <!-- ── Category hero ── -->
+      @if (category()) {
+        <div class="cat-hero container">
+          <div class="cat-hero-icon-wrap">
+            <span class="cat-hero-icon" aria-hidden="true">{{ category()!.icon }}</span>
+            <div class="cat-hero-glow"></div>
+          </div>
+          <div class="cat-hero-text">
+            <h1 class="cat-hero-title animate-fade-up">
+              @if (langService.currentLang() === 'ar') {
+                <span lang="ar">{{ category()!.nameAr }}</span>
+              } @else {
+                <span lang="en">{{ category()!.nameEn }}</span>
+              }
+            </h1>
+            <p class="cat-hero-sub animate-fade-up">
+              @if (langService.currentLang() === 'ar') {
+                <span lang="en">{{ category()!.nameEn }}</span>
+              } @else {
+                <span lang="ar">{{ category()!.nameAr }}</span>
+              }
+              <span class="cat-hero-count">
+                · {{ category()!.items.length }} {{ langService.currentLang() === 'ar' ? 'صنف' : 'items' }}
+              </span>
+            </p>
+          </div>
+        </div>
+      }
+
+      <!-- ── Items grid ── -->
       <div class="items-section container">
         @if (!category()) {
           @if (menuService.categories().length === 0) {
             <app-loader />
           } @else {
-            <!-- Not found in data -->
             <div class="not-found-state">
-              <span>🔍</span>
-              <p>{{ langService.currentLang() === 'ar' ? 'القسم غير موجود' : 'Category not found' }}</p>
+              <div class="not-found-icon">∅</div>
+              <p class="not-found-title">{{ langService.currentLang() === 'ar' ? 'القسم غير موجود' : 'Category not found' }}</p>
               <a class="go-home-btn" routerLink="/">
-                {{ langService.currentLang() === 'ar' ? 'العودة للرئيسية' : 'Go to Home' }}
+                {{ langService.currentLang() === 'ar' ? 'العودة للرئيسية' : 'Back to Home' }}
               </a>
             </div>
           }
@@ -103,25 +135,24 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
   `,
   styles: [`
     .category-page {
-      padding-bottom: var(--space-12);
+      padding-bottom: var(--space-20);
     }
 
-    /* ---- Sub-header ---- */
-    .cat-header {
+    /* ─────────────────── Sub-header ─────────────────── */
+    .cat-header-wrap {
       position: sticky;
-      top: 61px; /* height of main header */
+      top: 72px; /* below floating navbar */
       z-index: 90;
-      border-radius: 0;
-      border-inline: none;
-      border-top: none;
-      border-bottom: 1px solid var(--border-subtle);
       padding-block: var(--space-3);
+      /* Soft top blur that blends with page */
+      background: linear-gradient(to bottom, rgba(9,9,9,0.92) 60%, transparent 100%);
+      backdrop-filter: blur(12px);
     }
 
-    .cat-header-inner {
+    .cat-header-pill {
       display: flex;
       align-items: center;
-      gap: var(--space-4);
+      gap: var(--space-3);
     }
 
     /* Back button */
@@ -131,40 +162,45 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
       gap: var(--space-2);
       color: var(--text-muted);
       font-size: var(--font-size-sm);
-      font-weight: 500;
+      font-weight: 600;
       padding: var(--space-2) var(--space-3);
       border-radius: var(--radius-full);
       border: 1px solid var(--border-subtle);
-      transition: all var(--transition-fast);
+      background: rgba(255,255,255,0.03);
+      transition: all var(--transition-smooth);
       text-decoration: none;
       flex-shrink: 0;
-      min-height: 44px;
+      min-height: 36px;
     }
 
     .back-btn:hover {
       color: var(--text-primary);
       border-color: var(--border-glow);
-      background: var(--surface-glass);
+      background: rgba(180,135,102,0.08);
     }
 
-    .back-arrow {
-      font-size: var(--font-size-md);
-      transition: transform var(--transition-fast);
+    .back-icon {
+      transition: transform var(--transition-smooth);
     }
 
-    .back-btn:hover .back-arrow {
+    .back-btn:hover .back-icon {
       transform: translateX(-3px);
     }
 
-    [dir="rtl"] .back-arrow {
-      display: inline-block;
+    [dir="rtl"] .back-icon {
       transform: scaleX(-1);
     }
-    [dir="rtl"] .back-btn:hover .back-arrow {
+    [dir="rtl"] .back-btn:hover .back-icon {
       transform: scaleX(-1) translateX(-3px);
     }
 
-    /* Category title */
+    .breadcrumb-sep {
+      color: var(--border-medium);
+      font-size: var(--font-size-sm);
+      font-weight: 300;
+    }
+
+    /* Category in breadcrumb */
     .cat-title-wrap {
       display: flex;
       align-items: center;
@@ -174,17 +210,14 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
     }
 
     .cat-icon {
-      font-size: 24px;
+      font-size: 18px;
       flex-shrink: 0;
     }
 
-    .cat-names { min-width: 0; }
-
     .cat-title {
-      font-size: var(--font-size-lg);
+      font-size: var(--font-size-base);
       font-weight: 700;
       color: var(--text-primary);
-      margin: 0;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -193,23 +226,92 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
     /* Item count chip */
     .item-count-chip {
       font-size: var(--font-size-xs);
-      font-weight: 600;
-      color: var(--text-muted);
-      background: var(--surface-2);
-      padding: 4px 10px;
+      font-weight: 700;
+      color: var(--color-accent);
+      background: rgba(180,135,102,0.10);
+      border: 1px solid rgba(180,135,102,0.18);
+      padding: 3px 10px;
       border-radius: var(--radius-full);
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    /* ─────────────────── Hero ─────────────────── */
+    .cat-hero {
+      display: flex;
+      align-items: center;
+      gap: var(--space-6);
+      padding-block: var(--space-10) var(--space-8);
+    }
+
+    .cat-hero-icon-wrap {
+      position: relative;
       flex-shrink: 0;
     }
 
-    /* ---- Items grid ---- */
+    .cat-hero-icon {
+      font-size: 72px;
+      display: block;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 8px 24px rgba(0,0,0,0.5));
+    }
+
+    .cat-hero-glow {
+      position: absolute;
+      inset: -20px;
+      background: radial-gradient(circle, rgba(180,135,102,0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .cat-hero-text {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      min-width: 0;
+    }
+
+    .cat-hero-title {
+      font-size: clamp(var(--font-size-2xl), 5vw, var(--font-size-4xl));
+      font-weight: 800;
+      color: var(--text-primary);
+      margin: 0;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      animation-delay: 0ms;
+    }
+
+    .cat-hero-sub {
+      font-size: var(--font-size-base);
+      color: var(--text-muted);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      animation-delay: 60ms;
+      flex-wrap: wrap;
+    }
+
+    .cat-hero-count {
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+
+    @media (max-width: 480px) {
+      .cat-hero { flex-direction: column; align-items: flex-start; gap: var(--space-4); padding-block: var(--space-6) var(--space-4); }
+      .cat-hero-icon { font-size: 48px; }
+    }
+
+    /* ─────────────────── Items Grid ─────────────────── */
     .items-section {
-      padding-top: var(--space-6);
+      padding-top: var(--space-2);
     }
 
     .items-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-4);
+      gap: var(--space-5);
     }
 
     @media (min-width: 640px) {
@@ -217,7 +319,7 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
     }
 
     @media (min-width: 900px) {
-      .items-grid { grid-template-columns: repeat(4, 1fr); }
+      .items-grid { grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
     }
 
     /* Not found state */
@@ -227,30 +329,42 @@ import { LoaderComponent } from '../../shared/components/loader/loader.component
       align-items: center;
       justify-content: center;
       gap: var(--space-4);
-      padding: var(--space-16);
+      padding: var(--space-24);
       color: var(--text-muted);
     }
 
-    .not-found-state span { font-size: 48px; }
-    .not-found-state p { font-size: var(--font-size-lg); }
+    .not-found-icon {
+      font-size: 40px;
+      opacity: 0.4;
+    }
+
+    .not-found-title {
+      font-size: var(--font-size-lg);
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
 
     .go-home-btn {
       display: inline-flex;
       align-items: center;
-      background: linear-gradient(135deg, var(--color-accent), var(--color-primary));
-      color: var(--color-secondary);
+      background: rgba(180,135,102,0.12);
+      border: 1px solid rgba(180,135,102,0.25);
+      color: var(--color-accent);
       font-weight: 700;
       padding: var(--space-3) var(--space-6);
       border-radius: var(--radius-full);
-      font-size: var(--font-size-base);
-      transition: opacity var(--transition-fast);
+      font-size: var(--font-size-sm);
+      transition: all var(--transition-smooth);
       text-decoration: none;
     }
-    .go-home-btn:hover { opacity: 0.85; }
+
+    .go-home-btn:hover {
+      background: rgba(180,135,102,0.20);
+      border-color: rgba(180,135,102,0.40);
+    }
   `]
 })
 export class CategoryComponent implements OnInit {
-  // Route param via input binding (requiresWithComponentInputBinding)
   readonly id = input<string>('');
 
   readonly menuService = inject(MenuService);
@@ -275,7 +389,6 @@ export class CategoryComponent implements OnInit {
   );
 
   ngOnInit(): void {
-    // Set page title once data is available
     const cat = this.category();
     if (cat) {
       const lang = this.langService.currentLang();

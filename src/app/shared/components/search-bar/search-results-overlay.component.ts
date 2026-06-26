@@ -10,21 +10,35 @@ import { getStartingPrice } from '../../../core/models/menu.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink],
   template: `
-    <div class="overlay-backdrop animate-fade-in" (click)="close.emit()" role="dialog" aria-modal="true" aria-label="Search results">
-      <div class="overlay-panel glass-card" (click)="$event.stopPropagation()">
+    <div
+      class="overlay-backdrop animate-fade-in"
+      (click)="close.emit()"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Search results"
+    >
+      <div class="overlay-panel" (click)="$event.stopPropagation()">
+        <!-- Header -->
         <div class="overlay-header">
-          <span class="results-count">
-            {{ results().length }}
-            {{ langService.currentLang() === 'ar' ? 'نتيجة لـ' : 'results for' }}
-            "{{ query() }}"
-          </span>
-          <button class="close-btn" (click)="close.emit()" aria-label="Close search">✕</button>
+          <div class="overlay-header-left">
+            <span class="results-count-num">{{ results().length }}</span>
+            <span class="results-count-text">
+              {{ langService.currentLang() === 'ar' ? 'نتيجة لـ' : 'results for' }}
+              "{{ query() }}"
+            </span>
+          </div>
+          <button class="close-btn" (click)="close.emit()" aria-label="Close search">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+          </button>
         </div>
 
         @if (results().length === 0) {
           <div class="no-results">
-            <span>😶</span>
-            <p>{{ langService.currentLang() === 'ar' ? 'لا توجد نتائج' : 'No items found' }}</p>
+            <div class="no-results-icon">∅</div>
+            <p class="no-results-text">{{ langService.currentLang() === 'ar' ? 'لا توجد نتائج' : 'No items found' }}</p>
+            <p class="no-results-hint">{{ langService.currentLang() === 'ar' ? 'حاول البحث بكلمة أخرى' : 'Try a different keyword' }}</p>
           </div>
         } @else {
           <ul class="results-list" role="list">
@@ -44,9 +58,10 @@ import { getStartingPrice } from '../../../core/models/menu.model';
                       {{ langService.currentLang() === 'ar' ? result.category.nameAr : result.category.nameEn }}
                     </span>
                   </div>
-                  <span class="result-price price-badge">
-                    {{ getStartingPrice(result.item) }} {{ menuService.currency() }}
-                  </span>
+                  <div class="result-price">
+                    <span class="result-price-val">{{ getStartingPrice(result.item) }}</span>
+                    <span class="result-price-cur">{{ menuService.currency() }}</span>
+                  </div>
                 </a>
               </li>
             }
@@ -60,85 +75,137 @@ import { getStartingPrice } from '../../../core/models/menu.model';
       position: fixed;
       inset: 0;
       z-index: 200;
-      background: rgba(0,0,0,0.6);
+      background: rgba(0,0,0,0.65);
       display: flex;
       align-items: flex-start;
       justify-content: center;
-      padding-top: 80px;
+      padding-top: 90px;
       padding-inline: var(--space-4);
+      backdrop-filter: blur(4px);
     }
 
     .overlay-panel {
       width: 100%;
       max-width: 560px;
-      max-height: 70dvh;
+      max-height: 72dvh;
       overflow-y: auto;
+      background: rgba(16,16,16,0.95);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-float);
       padding: var(--space-4);
+      animation: fadeSlideDown 0.25s ease both;
     }
 
     .overlay-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: var(--space-3);
+      margin-bottom: var(--space-4);
+      padding-bottom: var(--space-3);
+      border-bottom: 1px solid var(--border-subtle);
     }
 
-    .results-count {
+    .overlay-header-left {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-2);
+    }
+
+    .results-count-num {
+      font-size: var(--font-size-lg);
+      font-weight: 800;
+      color: var(--color-gold);
+      line-height: 1;
+    }
+
+    .results-count-text {
       font-size: var(--font-size-sm);
       color: var(--text-muted);
     }
 
     .close-btn {
-      background: none;
-      border: none;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border-subtle);
       color: var(--text-muted);
       cursor: pointer;
-      font-size: var(--font-size-md);
-      padding: 4px 8px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      transition: color var(--transition-fast);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast);
       min-width: 44px;
       min-height: 44px;
     }
-    .close-btn:hover { color: var(--text-accent); }
 
+    .close-btn:hover {
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.09);
+    }
+
+    /* No results */
     .no-results {
       text-align: center;
-      padding: var(--space-8);
+      padding: var(--space-10) var(--space-8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .no-results-icon {
+      font-size: 32px;
+      color: var(--text-muted);
+      opacity: 0.5;
+      margin-bottom: var(--space-2);
+    }
+
+    .no-results-text {
+      font-size: var(--font-size-md);
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .no-results-hint {
+      font-size: var(--font-size-sm);
       color: var(--text-muted);
     }
-    .no-results span { font-size: 32px; display: block; margin-bottom: var(--space-2); }
 
+    /* Results list */
     .results-list {
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: var(--space-2);
+      gap: var(--space-1);
     }
 
     .result-link {
       display: flex;
       align-items: center;
       gap: var(--space-3);
-      padding: var(--space-3);
-      border-radius: var(--radius-md);
+      padding: var(--space-3) var(--space-3);
+      border-radius: var(--radius-lg);
       border: 1px solid transparent;
       transition: all var(--transition-fast);
       cursor: pointer;
     }
+
     .result-link:hover {
-      background: var(--surface-glass);
+      background: rgba(255,255,255,0.04);
       border-color: var(--border-subtle);
     }
 
     .result-icon {
-      font-size: 24px;
-      width: 40px;
-      height: 40px;
+      font-size: 22px;
+      width: 42px;
+      height: 42px;
       display: flex;
       align-items: center;
       justify-content: center;
-      background: var(--surface-2);
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
       flex-shrink: 0;
     }
@@ -148,7 +215,7 @@ import { getStartingPrice } from '../../../core/models/menu.model';
       min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 3px;
     }
 
     .result-name {
@@ -166,7 +233,22 @@ import { getStartingPrice } from '../../../core/models/menu.model';
     }
 
     .result-price {
+      display: flex;
+      align-items: baseline;
+      gap: 2px;
       flex-shrink: 0;
+    }
+
+    .result-price-val {
+      font-size: var(--font-size-md);
+      font-weight: 800;
+      color: var(--color-gold);
+    }
+
+    .result-price-cur {
+      font-size: var(--font-size-xs);
+      color: var(--text-muted);
+      font-weight: 500;
     }
   `]
 })

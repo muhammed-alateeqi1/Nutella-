@@ -22,7 +22,6 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
       <!-- Panel -->
       <div
         class="modal-panel"
-        [class.slide-up]="true"
         #modalPanel
         tabindex="-1"
         role="document"
@@ -36,7 +35,11 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
           id="modal-close-btn"
           (click)="close.emit()"
           aria-label="Close"
-        >✕</button>
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+        </button>
 
         @if (item()) {
           <!-- Image / Fallback -->
@@ -49,7 +52,8 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
               />
             } @else {
               <div class="modal-image-fallback">
-                <div class="fallback-glow"></div>
+                <div class="fallback-ambient-1"></div>
+                <div class="fallback-ambient-2"></div>
                 <span class="modal-initial" aria-hidden="true">
                   {{ langService.currentLang() === 'ar'
                       ? item()!.titleAr.charAt(0)
@@ -58,9 +62,12 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
               </div>
             }
 
+            <!-- Image gradient overlay -->
+            <div class="image-gradient"></div>
+
             @if (item()!.isPopular) {
               <span class="popular-badge modal-popular">
-                ⭐ {{ langService.currentLang() === 'ar' ? 'الأكثر طلباً' : 'Most Popular' }}
+                ✦ {{ langService.currentLang() === 'ar' ? 'الأكثر طلباً' : 'Most Popular' }}
               </span>
             }
           </div>
@@ -78,7 +85,7 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
               }
             </div>
 
-            <!-- Description (optional) -->
+            <!-- Description -->
             @if (item()!.description) {
               <p class="modal-description">{{ item()!.description }}</p>
             }
@@ -86,14 +93,15 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
             <!-- Unavailable banner -->
             @if (!item()!.isAvailable) {
               <div class="unavailable-banner">
-                {{ langService.currentLang() === 'ar' ? '❌ غير متوفر حالياً' : '❌ Currently unavailable' }}
+                <span class="unavailable-dot"></span>
+                {{ langService.currentLang() === 'ar' ? 'غير متوفر حالياً' : 'Currently unavailable' }}
               </div>
             }
 
             <!-- Pricing section -->
             <div class="modal-pricing">
               @if (hasVariants(item()!)) {
-                <!-- Multi-price: variants list -->
+                <!-- Multi-price variants -->
                 <p class="pricing-label">
                   {{ langService.currentLang() === 'ar' ? 'الأحجام والأسعار' : 'Sizes & Prices' }}
                 </p>
@@ -106,8 +114,9 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
                             : variant.label }}
                       </span>
                       <span class="variant-dots"></span>
-                      <span class="variant-price price-badge">
-                        {{ variant.price }} {{ currency() }}
+                      <span class="variant-price">
+                        <span class="price-val">{{ variant.price }}</span>
+                        <span class="price-cur">{{ currency() }}</span>
                       </span>
                     </li>
                   }
@@ -118,9 +127,10 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
                   <span class="single-price-label">
                     {{ langService.currentLang() === 'ar' ? 'السعر' : 'Price' }}
                   </span>
-                  <span class="single-price price-badge single-price-large">
-                    {{ item()!.price }} {{ currency() }}
-                  </span>
+                  <div class="single-price-display">
+                    <span class="single-price-val">{{ item()!.price }}</span>
+                    <span class="single-price-cur">{{ currency() }}</span>
+                  </div>
                 </div>
               }
             </div>
@@ -130,16 +140,17 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
     </div>
   `,
   styles: [`
-    /* ---- Backdrop ---- */
+    /* ─── Backdrop ─── */
     .modal-backdrop {
       position: fixed;
       inset: 0;
       z-index: 300;
-      background: rgba(0,0,0,0.72);
+      background: rgba(0,0,0,0.78);
       display: flex;
       align-items: flex-end;
       justify-content: center;
-      backdrop-filter: blur(4px);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
     }
 
     @media (min-width: 640px) {
@@ -148,28 +159,31 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
       }
     }
 
-    /* ---- Panel ---- */
+    /* ─── Panel ─── */
     .modal-panel {
       width: 100%;
-      max-width: 540px;
-      max-height: 92dvh;
+      max-width: 520px;
+      max-height: 93dvh;
       overflow-y: auto;
-      background: var(--surface-modal);
-      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-      box-shadow: var(--shadow-modal);
-      border: 1px solid var(--border-glow);
+      background: #0e0e0e;
+      border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+      box-shadow:
+        0 -2px 60px rgba(0,0,0,0.8),
+        0 0 0 1px rgba(255,255,255,0.06),
+        0 0 40px rgba(180,135,102,0.08);
+      border: 1px solid var(--border-subtle);
       border-bottom: none;
       position: relative;
-      animation: slideUp 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
       outline: none;
     }
 
     @media (min-width: 640px) {
       .modal-panel {
         border-radius: var(--radius-xl);
-        border: 1px solid var(--border-glow);
-        animation: scaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-        max-height: 85dvh;
+        border: 1px solid var(--border-subtle);
+        animation: scaleIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        max-height: 88dvh;
       }
     }
 
@@ -179,15 +193,15 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
     }
 
     @keyframes scaleIn {
-      from { transform: scale(0.92); opacity: 0; }
-      to   { transform: scale(1);    opacity: 1; }
+      from { transform: scale(0.92) translateY(16px); opacity: 0; }
+      to   { transform: scale(1) translateY(0);       opacity: 1; }
     }
 
     /* Drag handle */
     .drag-handle {
-      width: 40px;
-      height: 4px;
-      background: var(--border-glow);
+      width: 36px;
+      height: 3px;
+      background: rgba(255,255,255,0.12);
       border-radius: var(--radius-full);
       margin: var(--space-3) auto var(--space-2);
     }
@@ -201,32 +215,32 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
       position: absolute;
       top: var(--space-4);
       inset-inline-end: var(--space-4);
-      background: var(--surface-2);
+      background: rgba(255,255,255,0.05);
       border: 1px solid var(--border-subtle);
       border-radius: 50%;
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--text-muted);
       cursor: pointer;
-      font-size: 14px;
-      transition: all var(--transition-fast);
-      z-index: 1;
+      transition: all var(--transition-base);
+      z-index: 10;
       min-width: 44px;
       min-height: 44px;
     }
+
     .modal-close:hover {
-      color: var(--text-accent);
-      background: var(--surface-glass);
-      border-color: var(--border-glow);
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.09);
+      border-color: var(--border-medium);
     }
 
-    /* ---- Image wrap ---- */
+    /* ─── Image ─── */
     .modal-image-wrap {
       position: relative;
-      aspect-ratio: 16/9;
+      aspect-ratio: 4/3;
       overflow: hidden;
     }
 
@@ -234,17 +248,14 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
       width: 100%;
       height: 100%;
       object-fit: cover;
+      animation: fadeIn 0.4s ease both;
     }
 
+    /* Fallback */
     .modal-image-fallback {
       width: 100%;
       height: 100%;
-      background: linear-gradient(
-        135deg,
-        var(--color-primary) 0%,
-        var(--surface-2) 40%,
-        var(--color-accent) 100%
-      );
+      background: linear-gradient(135deg, #1a120a 0%, #2e1e10 50%, rgba(180,135,102,0.3) 100%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -252,39 +263,63 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
       overflow: hidden;
     }
 
-    .fallback-glow {
+    .fallback-ambient-1 {
       position: absolute;
-      width: 200px;
-      height: 200px;
-      background: radial-gradient(circle, rgba(192,119,44,0.3) 0%, transparent 70%);
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(207,161,93,0.28) 0%, transparent 65%);
       border-radius: 50%;
+      top: -40px;
+      right: -40px;
+    }
+
+    .fallback-ambient-2 {
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      background: radial-gradient(circle, rgba(180,135,102,0.20) 0%, transparent 65%);
+      border-radius: 50%;
+      bottom: -20px;
+      left: 10px;
     }
 
     .modal-initial {
-      font-size: 72px;
+      font-size: 80px;
       font-weight: 800;
-      color: rgba(235,170,157,0.45);
+      color: rgba(180,135,102,0.30);
       position: relative;
       z-index: 1;
       font-family: var(--font-ar);
       line-height: 1;
     }
 
+    /* Image gradient overlay */
+    .image-gradient {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(to top, #0e0e0e 0%, transparent 100%);
+      pointer-events: none;
+    }
+
     .modal-popular {
       position: absolute;
-      bottom: var(--space-3);
-      inset-inline-start: var(--space-3);
+      bottom: var(--space-4);
+      inset-inline-start: var(--space-4);
+      z-index: 2;
     }
 
-    /* ---- Content ---- */
+    /* ─── Content ─── */
     .modal-content {
-      padding: var(--space-5) var(--space-5) var(--space-8);
+      padding: var(--space-5) var(--space-6) var(--space-8);
       display: flex;
       flex-direction: column;
-      gap: var(--space-4);
+      gap: var(--space-5);
     }
 
-    /* Titles */
+    /* Title */
     .modal-titles {
       display: flex;
       flex-direction: column;
@@ -292,47 +327,60 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
     }
 
     .modal-title-primary {
-      font-size: var(--font-size-xl);
+      font-size: var(--font-size-2xl);
       font-weight: 800;
       color: var(--text-primary);
-      line-height: 1.2;
+      line-height: 1.15;
       margin: 0;
+      letter-spacing: -0.02em;
     }
 
     .modal-title-secondary {
       font-size: var(--font-size-sm);
       color: var(--text-muted);
       margin: 0;
+      font-weight: 400;
     }
 
     /* Description */
     .modal-description {
       font-size: var(--font-size-sm);
       color: var(--text-secondary);
-      line-height: 1.7;
-      background: var(--surface-glass);
-      padding: var(--space-3);
-      border-radius: var(--radius-md);
+      line-height: 1.75;
+      background: rgba(255,255,255,0.025);
+      padding: var(--space-4);
+      border-radius: var(--radius-lg);
       border: 1px solid var(--border-subtle);
     }
 
     /* Unavailable */
     .unavailable-banner {
-      background: rgba(167,47,51,0.15);
-      border: 1px solid rgba(167,47,51,0.3);
-      color: var(--text-accent);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      background: rgba(30,30,30,0.8);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--text-muted);
       padding: var(--space-3) var(--space-4);
-      border-radius: var(--radius-md);
+      border-radius: var(--radius-lg);
       font-size: var(--font-size-sm);
       font-weight: 600;
     }
 
-    /* ---- Pricing ---- */
+    .unavailable-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(180,100,100,0.8);
+      flex-shrink: 0;
+    }
+
+    /* ─── Pricing ─── */
     .modal-pricing {
-      background: var(--surface-glass);
+      background: rgba(24,24,24,0.7);
       border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg);
-      padding: var(--space-4);
+      border-radius: var(--radius-xl);
+      padding: var(--space-5);
     }
 
     .pricing-label {
@@ -340,8 +388,8 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin: 0 0 var(--space-3);
+      letter-spacing: 0.1em;
+      margin: 0 0 var(--space-4);
     }
 
     /* Variants list */
@@ -349,15 +397,16 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
       list-style: none;
       display: flex;
       flex-direction: column;
-      gap: var(--space-2);
+      gap: 0;
     }
 
     .variant-row {
       display: flex;
       align-items: center;
       gap: var(--space-3);
-      padding-block: var(--space-2);
+      padding-block: var(--space-3);
       border-bottom: 1px solid var(--border-subtle);
+      transition: background var(--transition-fast);
     }
 
     .variant-row:last-child {
@@ -377,14 +426,29 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
       background: repeating-linear-gradient(
         to right,
         var(--border-subtle) 0px,
-        var(--border-subtle) 4px,
-        transparent 4px,
+        var(--border-subtle) 3px,
+        transparent 3px,
         transparent 8px
       );
     }
 
     .variant-price {
+      display: flex;
+      align-items: baseline;
+      gap: 3px;
       flex-shrink: 0;
+    }
+
+    .price-val {
+      font-size: var(--font-size-md);
+      font-weight: 800;
+      color: var(--color-gold);
+    }
+
+    .price-cur {
+      font-size: var(--font-size-xs);
+      color: var(--text-muted);
+      font-weight: 500;
     }
 
     /* Single price */
@@ -392,6 +456,7 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: var(--space-4);
     }
 
     .single-price-label {
@@ -400,9 +465,23 @@ import { MenuItem, MenuCategory, getStartingPrice, hasVariants } from '../../../
       font-weight: 500;
     }
 
-    .single-price-large {
-      font-size: var(--font-size-md) !important;
-      padding: 6px 16px !important;
+    .single-price-display {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .single-price-val {
+      font-size: var(--font-size-2xl);
+      font-weight: 800;
+      color: var(--color-gold);
+      line-height: 1;
+    }
+
+    .single-price-cur {
+      font-size: var(--font-size-sm);
+      color: var(--text-muted);
+      font-weight: 600;
     }
   `]
 })
@@ -419,7 +498,6 @@ export class ItemModalComponent implements OnInit, OnDestroy {
   private readonly previousFocus = document.activeElement as HTMLElement | null;
 
   ngOnInit(): void {
-    // Focus the panel for keyboard/screen-reader access
     setTimeout(() => {
       const panel = this.el.nativeElement.querySelector('.modal-panel') as HTMLElement;
       panel?.focus();

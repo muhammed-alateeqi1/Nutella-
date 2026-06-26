@@ -12,50 +12,54 @@ import { LanguageService } from '../../../core/services/language.service';
       [attr.aria-label]="langService.currentLang() === 'en' ? 'Switch to Arabic' : 'التبديل إلى الإنجليزية'"
       (click)="langService.toggleLanguage()"
     >
-      <span class="lang-active">{{ langService.currentLang() === 'en' ? 'EN' : 'ع' }}</span>
-      <span class="lang-separator">|</span>
-      <span class="lang-inactive">{{ langService.currentLang() === 'en' ? 'ع' : 'EN' }}</span>
+      <span class="lang-pill" [class.active]="langService.currentLang() === 'en'">EN</span>
+      <span class="lang-sep">·</span>
+      <span class="lang-pill" [class.active]="langService.currentLang() === 'ar'">ع</span>
     </button>
   `,
   styles: [`
     .lang-btn {
       display: flex;
       align-items: center;
-      gap: 4px;
-      background: var(--surface-glass);
-      border: 1px solid var(--border-glow);
+      gap: 5px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: var(--radius-full);
-      padding: 6px 14px;
+      padding: 6px 12px;
       cursor: pointer;
       color: var(--text-primary);
-      font-size: var(--font-size-sm);
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      transition: all var(--transition-base);
+      font-size: var(--font-size-xs);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      transition: all var(--transition-smooth);
       font-family: var(--font-en);
       min-width: 44px;
-      min-height: 44px;
+      min-height: 38px;
     }
 
     .lang-btn:hover {
-      background: var(--color-accent);
-      border-color: var(--color-accent);
-      box-shadow: var(--shadow-glow);
-      transform: scale(1.04);
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(180,135,102,0.25);
     }
 
-    .lang-active {
-      color: var(--color-secondary);
-      font-weight: 700;
-    }
-
-    .lang-separator {
+    .lang-pill {
       color: var(--text-muted);
+      transition: all var(--transition-smooth);
+      padding: 2px 6px;
+      border-radius: var(--radius-full);
+      line-height: 1;
+    }
+
+    .lang-pill.active {
+      background: linear-gradient(135deg, var(--color-accent), var(--color-gold));
+      color: #111;
+      font-weight: 800;
+    }
+
+    .lang-sep {
+      color: var(--border-medium);
       font-weight: 300;
-    }
-
-    .lang-inactive {
-      color: var(--text-muted);
+      font-size: 10px;
     }
   `]
 })
